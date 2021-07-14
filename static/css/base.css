@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&family=Mate+SC&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Baloo Bhai 2', cursive;
+}
+#navbar{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    padding: 10px 25px;
+    background-color: rgb(49, 19, 19);
+    font-family: 'Mate SC', serif;
+}
+#logo{
+    position: relative;
+    right: 17vw;
+}
+#hamberger{
+    display: none;
+}
+#logo img{
+    height: 40px;
+    filter: invert(1);
+}
+#navbar ul{
+    display: flex;
+    justify-content: center;
+}
+#navbar ul li{
+    list-style: none;
+}
+#navbar ul li a{
+    text-decoration: none;
+    color:white;
+    padding: 5px 20px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+#navbar ul li a:hover{
+    color: rgb(49, 19, 19);
+    background-color: white;
+    border-radius: 30px;
+}
+#footer{
+    padding: 15px 20px;
+    text-align: center;
+    background-color: black;
+    color: white;
+
+}

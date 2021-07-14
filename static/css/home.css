@@ -1,0 +1,65 @@
+#introSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    color: white;
+    font-size: 1.3rem;
+    background: center/cover no-repeat url('../static/images/introBg.jpg') ;
+}
+
+#missionSection{
+    padding: 10px 20px;
+}
+#missionSection h1{
+    text-align: center;
+    font-family: 'Mate SC', serif;
+}
+#cards-container{
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+}
+.card{
+    height: 250px;
+    width: 33vw;
+    border: 2px solid black;
+    margin: 5px 10px;
+    border-radius: 5px;
+    background-color: cornsilk;
+}
+.card h2{
+    text-align: center;
+}
+.card-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 4px;
+}
+.card-content img{
+    height: 150px;
+    width: 150px;
+}
+
+#sponsorsSection{
+    padding: 10px 20px;
+    background-color: darkkhaki;
+}
+#sponsorsSection h1{
+    text-align: center;
+    font-family: 'Mate SC', serif;
+}
+#sponsors-container{
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#sponsors-container img{
+    width: 150px;
+    height: 150px;
+    border-radius: 75px;
+}
+

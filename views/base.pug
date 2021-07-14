@@ -1,0 +1,23 @@
+doctype html 
+html 
+    head 
+        title Anni Dance Academy 
+        style 
+            include ../static/css/base.css
+            block style
+    body 
+        nav#navbar 
+            div#logo
+                img(src="../static/images/card3.png", alt="logo")
+                img(id="hamberger", src="../static/images/hamberger.png", alt="")
+            ul 
+                li #[a(href='/') Home]
+                li #[a(href='/') About Us]
+                li #[a(href='/') Services]
+                li #[a(href='/') Class Info]
+                li #[a(href='/contact') Contact Us]
+        block content 
+        footer#footer 
+            | Copyright © 2021 www.AnniDanceAcademy.com | All rights reserved
+        script 
+            include ../static/script.js

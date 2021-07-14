@@ -1,0 +1,31 @@
+extend base.pug
+block style
+    include ../static/css/home.css
+block content
+    section#introSection 
+        h1 Welcome to Anni Dance Academy
+    section#missionSection 
+         h1 Our Mission 
+         div#cards-container 
+            div.card#card1
+                h2 Dance Perfection
+                div.card-content
+                    img(src='../static/images/card1.png')
+                    p Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio nisi nihil esse quae illo inventore, expedita rem culpa repellat mollitia.
+            div.card#card2
+                h2 Dance the way you like
+                div.card-content
+                    img(src='../static/images/card2.png')
+                    p Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio nisi nihil esse quae illo inventore, expedita rem culpa repellat mollitia. 
+            div.card#card3
+                h2 Expert Teaching 
+                div.card-content
+                    img(src='../static/images/card3.png')
+                    p Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio nisi nihil esse quae illo inventore, expedita rem culpa repellat mollitia.
+    section#sponsorsSection 
+            h1 Our Sponsors
+            div#sponsors-container 
+                img(src='../static/images/sponsor1.png')
+                img(src='../static/images/sponsor2.jpg')
+                img(src='../static/images/sponsor3.png')
+                img(src='../static/images/sponsor4.jpg')
