@@ -31,7 +31,7 @@ body{
     display: flex;
     justify-content: center;
 }
-#navbar ul li{
+#navbar ul li, #login li{
     list-style: none;
 }
 #navbar ul li a{
@@ -45,6 +45,27 @@ body{
     color: rgb(49, 19, 19);
     background-color: white;
     border-radius: 30px;
+}
+#action{
+    position:relative;
+    left: 20vw;
+}
+#action li a{
+    text-decoration:none;
+        font-weight: bold;
+    width: 10vw;
+    height: 5vh;
+        padding: 5px 20px;
+    cursor: pointer;
+    border: 2px solid rgb(195, 0, 255);
+    background-color:black;
+    color: white;
+    border-radius: 10px;
+}
+#action li a:hover{
+
+        background-color:cornsilk ;
+    color: black;
 }
 #footer{
     padding: 15px 20px;

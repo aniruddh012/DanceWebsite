@@ -1,0 +1,16 @@
+extend base.pug
+block style 
+    include ../static/css/login.css
+block content 
+    div#mainDiv
+        h1 Login
+        div.message #[p(color='red') #{message}]
+        form(action="/signup", method="post", id="signupForm") 
+            input(type="email", name="email", placeholder="Email id", class="inputs")
+            input(type="password", name="password", placeholder=" Password", class="inputs")
+            button(type="submit", id="btn")
+               | Submit
+            p#signupMessage Not an account? 
+               a(href="./signup") Signup
+        
+        

@@ -1,0 +1,16 @@
+extend base.pug
+block style 
+    include ../static/css/signup.css
+block content 
+    div#mainDiv
+        h1 Signup 
+        div.message #[p(color='red') #{message}]
+        form(action="/signup", method="post", id="signupForm") 
+            input(type="text", name="firstname", placeholder="First Name",  class="inputs")
+            input(type="text", name="lastname", placeholder="Last Name",  class="inputs")
+            input(type="email", name="email", placeholder="Email id", class="inputs")
+            input(type="phone", name="phone", placeholder="Phone No.", class="inputs")
+            input(type="password", name="password", placeholder=" Password", class="inputs")
+            input(type="password", name="confirmPassword", placeholder=" Confirm Password", class="inputs")
+            button(type="submit", id="btn")
+               | Submit
