@@ -1,6 +1,10 @@
 extend base.pug
 block style 
     include ../static/css/contact.css
+block username
+    a(href=`/profile/${userid}`) #{username}
+block action
+    li #[a(href=`/${actionurl}`) #{actionname} ]
 block content 
     div#container
         h1 Contact Us 

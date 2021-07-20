@@ -1,6 +1,10 @@
 extend base.pug
 block style
     include ../static/css/home.css
+block username
+    a(href=`/profile/${userid}`) #{username}
+block action
+    li #[a(href=`/${actionurl}`) #{actionname} ]
 block content
     section#introSection 
         h1 Welcome to Anni Dance Academy

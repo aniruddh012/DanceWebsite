@@ -49,6 +49,18 @@ body{
 #action{
     position:relative;
     left: 20vw;
+    display:flex;
+}
+#action a{
+    font-weight:bold;
+    color:white;
+    margin-left:10px;
+}
+#action a:hover{
+    color:rgb(195, 0, 255);
+}
+#action li{
+    list-style:none;
 }
 #action li a{
     text-decoration:none;

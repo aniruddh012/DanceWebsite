@@ -10,13 +10,15 @@ const nodemailer = require('nodemailer');
 const port = 80;
 
 // Configuring nodemailer to send emails
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth:{
-//         user: 'aniruddhyadavhunter@gmail.com',
-//         pass: 'Aniruddh012#'
-//     }
-// });
+let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: "aniruddhyadavhunter@gmail.com", // generated ethereal user
+      pass: "Aniruddh012#", // generated ethereal password
+    },
+  });
 
 // Contact form configuration and data saving to database
 
@@ -31,7 +33,6 @@ const Contact = mongoose.model('Contact', contactSchema);
 
 app.post('/contact',(req,res)=>{
     var myData = new Contact(req.body);
-    console.log(req.name)
     myData.save().then(()=>{
         res.send('This item has been saved to the database')
         }).catch(()=>{
@@ -48,11 +49,39 @@ app.use(cookieParser());
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'));
 
-app.get('/',(req,res)=>{
-    res.status(200).render('home');
+app.get('/',async (req,res)=>{
+    let logintoken = await req.cookies.dslogin;
+    if (logintoken) {
+        let user = await Users.findOne({"tokens.token" : logintoken});
+        res.status(200).render('home', {
+            username:user.firstname,
+            userid:user._id,
+            actionurl:"logout",
+            actionname:"Logout"
+        });
+    } else {
+        res.status(200).render('home',{
+            actionurl:"login",
+            actionname:"Login"
+        });
+    }
 })
-app.get('/contact',(req,res)=>{
-    res.status(200).render('./contact');
+app.get('/contact',async (req,res)=>{
+    let logintoken = await req.cookies.dslogin;
+    if (logintoken) {
+        let user = await Users.findOne({"tokens.token" : logintoken});
+        res.status(200).render('./contact', {
+            username:user.firstname,
+            userid:user._id,
+            actionurl:"logout",
+            actionname:"Logout"
+        });
+    } else {
+    res.status(200).render('./contact', {
+        actionurl:"login",
+        actionname:"Login"
+    });
+    }
 })
 app.get('/signup',(req,res)=>{
     res.status(200).render('./signup');
@@ -77,7 +106,6 @@ const userSchema = new mongoose.Schema({
 
   userSchema.methods.generateAuthToken = async function(){
       const token = await jwt.sign({_id:this._id}, "aniruddhyadavofficial");
-      console.log(token);
       this.tokens = this.tokens.concat({token});
       return token;
   }
@@ -113,22 +141,21 @@ app.post('/signup', async function(req,res){
                     password:req.body.password,
                     status: "pending"
                 });
-                console.log(user)
                 const token = await user.generateAuthToken();
-                // var mailOptions = await {
-                //     from : 'aniruddhyadavofficial@gmail.com',
-                //     to : user.email,
-                //     subject : `Verify your email`,
-                //     text : `Please verify your email to create an account by this link <a href="http://localhost/login?token=${token}">http://localhost/login?token=${token}</a>`
-                // };
-                // transporter.sendMail(mailOptions, await function(error,info){
-                //     if (error){
-                //         console.log(error);
-                //     }
-                //     else{
-                //         console.log("email sent: " + info.response);
-                //     }
-                // });
+                var mailOptions = await {
+                    from : 'aniruddhyadavhunter@gmail.com',
+                    to : user.email,
+                    subject : `Verify your email`,
+                    text : `Please verify your email to create an account by this link http://localhost/login?token=${token}`
+                };
+                transporter.sendMail(mailOptions, await function(error,info){
+                    if (error){
+                        console.log(error);
+                    }
+                    else{
+                        console.log("email sent: " + info.response);
+                    }
+                });
                 await user.save().then(()=>{
                     res.status(200).render('./signup', {
                         message: "We have sent an email to you, Please verify your email to successfully create an account"
@@ -154,10 +181,11 @@ app.post('/signup', async function(req,res){
 // Signup form ends here and login form starts here
 
 app.get('/login', async function(req,res){
-    let stoken = req.query.token;
-    if (stoken){
-        Users.update({token:stoken}, {$set:{ status:"active"}});       
-        res.status(200).render('./login', {
+    let token = await req.query.token;
+    let loginuser = await Users.findOne({"tokens.token": token})
+    if (token && loginuser){
+        await Users.updateOne({"tokens.token":token}, {$set:{tokens:[],status:"active"}});       
+        await res.status(200).render('./login', {
              message: "Your Account has been created successfully, Please Login to continue"
         })
     }
@@ -165,7 +193,56 @@ app.get('/login', async function(req,res){
         res.status(200).render('./login');
     }
 })
+app.post('/login', async function(req,res){
+    let loginpassword = req.body.password;
+    console.log(loginpassword)
+    let user = await Users.findOne({"email":req.body.email})
+    let status = await user.status;
+    console.log(user.password,status)
+    await bcrypt.compare(req.body.password, user.password, async (err, isValid)=>{
+        if (isValid) {
+            let token = await user.generateAuthToken();
+            res.cookie('dslogin', token, {
+                expire: new Date(Date.now()+1000*60*60*24*28),
+                httpOnly:true
+            })
+            await user.save().then(()=>{
+                res.status(200).redirect('/');
+                }).catch((error)=>{
+                    res.status(400).render('./login',{
+                    message:"Sorry Something wrong here"
+                    })
+                })
+        }
+        if (err) {
+            res.status(400).render('./login',{
+            message:"Invalid login details"
+        })
+        }
+        if (!isValid) {
+            console.log(!isValid)
+            res.status(400).render('./login',{
+            message:"Invalid login details"
+        })
+        }
+    });
+})
 
+
+app.get('/logout', async (req,res)=>{
+    let logoutToken = await req.cookies.dslogin;
+    let logoutuser = await Users.findOne({"tokens.token":logoutToken});
+    logoutuser.tokens = await logoutuser.tokens.filter(elem =>{
+        return elem.token != logoutToken;
+    });
+    await logoutuser.save().then(()=>{
+        res.clearCookie('dslogin');
+        res.status(200).redirect('/');
+        }).catch(()=>{
+            console.log("Sorry something went wrong here")
+    })
+    
+})
 
 
 app.listen(port, ()=>{
